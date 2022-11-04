@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Template • TodoMVC</title>
+		<link rel="stylesheet" href="node_modules/todomvc-common/base.css">
+		<link rel="stylesheet" href="node_modules/todomvc-app-css/index.css">
+		<script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+
+
+		<link rel="stylesheet" href="css/app.css">
+	</head>
+	<body>
+
+
+		<section
+			x-data="todos()"
+			class="todoapp"
+
+			>
+
+			<header class="header">
+				<h1>todos</h1>
+
+
+				<input x-model="newTodo"
+					   @keyup.enter="addTodo"
+						class="new-todo"
+						placeholder="What needs to be done?"
+						autofocus
+
+				>
+			</header>
+
+
+			<section class="main" x-show="todos.length">
+				<input
+						x-model="allComplete"
+						@click="toggleAllComplete"
+						id="toggle-all"
+						class="toggle-all"
+						type="checkbox"
+
+					/>
+
+				<label for="toggle-all">Mark all as complete</label>
+
+
+
+				<ul class="todo-list">
+
+
+
+				<template x-for="todo in filteredTodos" :key="todo.id">
+					<li
+
+						:class="{
+							editing: todo === editedTodo,
+							completed: todo.completed
+
+						}"
+						>
+
+
+							<div class="view">
+								<input x-model="todo.completed"
+									@click="toggleTodoCompletion(todo)"
+									class="toggle"
+									type="checkbox"
+
+							>
+
+							<label
+								x-text="todo.body"
+								@dblclick="editTodo(todo)"
+							></label>
+
+							<button
+								@click="deleteTodo(todo)"
+								class="destroy"
+							></button>
+						</div>
+
+
+						<input
+								x-model="todo.body"
+								@keyup.enter="editComplete(todo)"
+								@keyup.escape="cancelEdit(todo)"
+								class="edit">
+
+					</li>
+
+				</template>
+				</ul>
+			</section>
+			<!-- This footer should be hidden by default and shown when there are todos -->
+			<footer class="footer" x-show="todos.length">
+				<!-- This should be `0 items left` by default -->
+				<span class="todo-count"><strong x-text="active.length"></strong> item left</span>
+				<!-- Remove this if you don't implement routing -->
+				<ul class="filters">
+					<li>
+						<a @click.prevent="filter = 'all'"
+							:class="{ selected: filter === 'all' }"
+							href="#/"
+
+							>
+
+							All</a>
+					</li>
+					<li>
+						<a @click.prevent="filter = 'active'"
+							:class="{ selected: filter === 'active' }"
+							href="#/active"
+
+							>
+
+							Active</a>
+				</li>
+					<li>
+						<a @click.prevent="filter = 'completed'"
+							:class="{ selected: filter === 'completed' }"
+							href="#/completed"
+
+							>
+
+							Completed</a>
+					</li>
+				</ul>
+
+
+				<button x-show="completed.length"
+						@click="todos = active"
+						class="clear-completed"
+
+					>
+						Clear completed
+
+				</button>
+			</footer>
+		</section>
+		<footer class="info">
+			<p>Double-click to edit a todo</p>
+
+
+			<p>Created by <a href="http://clarkjoshua.com">Joshua Clark</a></p>
+
+			<p>Part of <a href="http://todomvc.com">TodoMVC</a></p>
+		</footer>
+		<!-- Scripts here. Don't remove ↓ -->
+		<script src="node_modules/todomvc-common/base.js"></script>
+		<script src="js/todos.js"></script>
+	</body>
+</html>
